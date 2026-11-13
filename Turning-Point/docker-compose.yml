@@ -1,0 +1,50 @@
+services:
+  # MongoDB — Heterogeneous Event Document Store
+  mongodb:
+    image: mongo:7.0
+    container_name: eventinsight-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: eventinsight_ai
+    volumes:
+      - mongo_data:/data/db
+
+  # Mongo Express — Optional Web UI for inspecting MongoDB locally
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: eventinsight-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH: "false"
+    depends_on:
+      - mongodb
+
+  # n8n — Workflow Orchestration and Integration Engine (Optional local container)
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: eventinsight-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=development
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo_data:
+    driver: local
+  n8n_data:
+    driver: local

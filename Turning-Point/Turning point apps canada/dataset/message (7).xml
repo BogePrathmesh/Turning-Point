@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<nas:NasMessage
+  xmlns:nas="http://www.faa.aero/nas/4.1"
+  xmlns:fx="http://www.fixm.aero/flight/4.0"
+  xmlns:fixm="http://www.fixm.aero/fixm/4.0"
+  xmlns:fb="http://www.fixm.aero/base/4.0"
+  xmlns:mesg="http://www.fixm.aero/messaging/4.0">
+  <nas:flight xsi:type="nas:TfdmFlightType"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <fx:arrival xsi:type="nas:TfdmArrivalType" destinationPointText="KFSD"/>
+    <fx:departure xsi:type="nas:TfdmDepartureType" departurePointText="KDEN">
+      <nas:offBlockTime>
+        <nas:initial timeReference="UTC">2026-10-21T19:40:00Z</nas:initial>
+      </nas:offBlockTime>
+    </fx:departure>
+    <fx:flightIdentification xsi:type="nas:NasFlightIdentificationType" aircraftIdentification="SKW5378">
+      <nas:idCreatorUnit>
+        <nas:locationIndicator>KZDV</nas:locationIndicator>
+      </nas:idCreatorUnit>
+      <nas:tfdmId codeSpace="urn:uuid">9f374863-832a-4c80-99ec-7ca6b013351b</nas:tfdmId>
+      <nas:tfdmIdCreatorAirport locationIndicator="KDEN"/>
+      <nas:computerId>570</nas:computerId>
+    </fx:flightIdentification>
+    <nas:flightPlan identifier="KD662834xC">
+      <nas:tfdmIdOfFlightPlanUsedForSurfaceManagement>9f374863-832a-4c80-99ec-7ca6b013351b</nas:tfdmIdOfFlightPlanUsedForSurfaceManagement>
+    </nas:flightPlan>
+    <nas:flightStatus>
+      <nas:tfdmFlightState value="TAKEOFF_ROLL" source="TFDM">
+        <nas:reportedTimestamp timeReference="UTC">2026-10-21T19:58:46.544Z</nas:reportedTimestamp>
+      </nas:tfdmFlightState>
+    </nas:flightStatus>
+  </nas:flight>
+  <nas:metadata messageType="FlightUpdate"/>
+</nas:NasMessage>

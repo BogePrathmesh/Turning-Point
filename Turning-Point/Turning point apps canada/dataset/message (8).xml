@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<nas:NasMessage
+  xmlns:nas="http://www.faa.aero/nas/4.1"
+  xmlns:fx="http://www.fixm.aero/flight/4.0"
+  xmlns:fixm="http://www.fixm.aero/fixm/4.0"
+  xmlns:fb="http://www.fixm.aero/base/4.0"
+  xmlns:mesg="http://www.fixm.aero/messaging/4.0">
+  <nas:flight xsi:type="nas:TfdmFlightType"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <fx:arrival xsi:type="nas:TfdmArrivalType" destinationPointText="KLAX">
+      <nas:arrivalFix>
+        <nas:designatedPoint>HEC</nas:designatedPoint>
+      </nas:arrivalFix>
+    </fx:arrival>
+    <fx:departure xsi:type="nas:TfdmDepartureType" departurePointText="CYYZ">
+      <nas:offBlockTime>
+        <nas:initial timeReference="UTC">2026-10-21T17:15:00Z</nas:initial>
+      </nas:offBlockTime>
+    </fx:departure>
+    <fx:flightIdentification xsi:type="nas:NasFlightIdentificationType" majorCarrierIdentifier="ACA" aircraftIdentification="ACA791">
+      <nas:idCreatorUnit>
+        <nas:locationIndicator>KZLA</nas:locationIndicator>
+      </nas:idCreatorUnit>
+      <nas:tfmsAirline>ACA</nas:tfmsAirline>
+      <nas:tfdmId codeSpace="urn:uuid">58148839-3260-44ee-8ffd-e8bc25d24ec0</nas:tfdmId>
+      <nas:tfdmIdCreatorAirport locationIndicator="KLAX"/>
+      <nas:tfmId>160397426</nas:tfmId>
+      <nas:computerId>695</nas:computerId>
+    </fx:flightIdentification>
+    <nas:flightPlan identifier="KC5985540R">
+      <nas:tfdmIdOfFlightPlanUsedForSurfaceManagement>58148839-3260-44ee-8ffd-e8bc25d24ec0</nas:tfdmIdOfFlightPlanUsedForSurfaceManagement>
+    </nas:flightPlan>
+    <nas:flightStatus>
+      <nas:tfdmFlightState value="EN_ROUTE" source="TFDM">
+        <nas:reportedTimestamp timeReference="UTC">2026-10-21T17:28:02.809Z</nas:reportedTimestamp>
+      </nas:tfdmFlightState>
+    </nas:flightStatus>
+    <nas:tfdmFlightCreationTime timeReference="UTC">2026-10-20T17:15:42.144Z</nas:tfdmFlightCreationTime>
+  </nas:flight>
+  <nas:metadata messageType="FlightAdd"/>
+</nas:NasMessage>

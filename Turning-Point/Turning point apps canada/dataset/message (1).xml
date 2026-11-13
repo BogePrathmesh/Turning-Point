@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<message:AIXMBasicMessage
+  xmlns:message="http://www.aixm.aero/schema/5.1/message"
+  xmlns:gml="http://www.opengis.net/gml/3.2"
+  xmlns:aixm="http://www.aixm.aero/schema/5.1"
+  xmlns:event="http://www.aixm.aero/schema/5.1/event"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:fns="urn:us.gov.dot.faa.aim.fns"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:fnse="http://www.aixm.aero/schema/5.1/extensions/FAA/FNSE" xsi:schemaLocation="http://www.aixm.aero/schema/5.1/message https://aixm-xsd.cgifederal-aim.com/AIXM_BasicMessage.xsd" gml:id="NMS_ID_1792612190023081">
+  <message:hasMember>
+    <event:Event gml:id="Event_1_1792612190023081">
+      <gml:identifier codeSpace="urn:uuid:">bbdf8d4f-096c-4383-8781-f179753c8f3b</gml:identifier>
+      <event:timeSlice>
+        <event:EventTimeSlice gml:id="Event_TS_1_1792612190023081">
+          <gml:validTime>
+            <gml:TimePeriod gml:id="Event_TS_TP_1_1792612190023081">
+              <gml:beginPosition>2026-10-21T19:49:00.000Z</gml:beginPosition>
+              <gml:endPosition>2026-10-24T19:49:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </gml:validTime>
+          <aixm:interpretation>BASELINE</aixm:interpretation>
+          <aixm:sequenceNumber>1</aixm:sequenceNumber>
+          <aixm:correctionNumber>0</aixm:correctionNumber>
+          <event:scenario>980</event:scenario>
+          <event:textNOTAM>
+            <event:NOTAM gml:id="NOTAM_1_1792612190023081">
+              <event:series>A</event:series>
+              <event:number>8255</event:number>
+              <event:type>C</event:type>
+              <event:issued>2026-10-21T19:49:00.000Z</event:issued>
+              <event:referredSeries>A</event:referredSeries>
+              <event:referredNumber>8223</event:referredNumber>
+              <event:referredYear>2026</event:referredYear>
+              <event:affectedFIR>KZOB</event:affectedFIR>
+              <event:selectionCode>QOBXX</event:selectionCode>
+              <event:traffic>IV</event:traffic>
+              <event:purpose>M</event:purpose>
+              <event:scope>AE</event:scope>
+              <event:minimumFL>000</event:minimumFL>
+              <event:maximumFL>999</event:maximumFL>
+              <event:coordinates>4029N08013W</event:coordinates>
+              <event:radius>5</event:radius>
+              <event:location>PIT</event:location>
+              <event:effectiveStart>202610211949</event:effectiveStart>
+              <event:effectiveEnd>202610241949</event:effectiveEnd>
+              <event:text>OBST CRANE (ASN UNKNOWN) 402929N0801407W (0.519NM NE APCH END RWY 10C&#xA;CANCELED</event:text>
+              <event:translation>
+                <event:NOTAMTranslation gml:id="NT_1_1792612190023081">
+                  <event:type>OTHER:ICAO</event:type>
+                  <event:formattedText>
+                    <html:div>A8255/26 NOTAMC A8223/26 Q) KZOB/QOBXX/IV/M/AE/000/999/4029N08013W005 A) KPIT B) 2610211949 E) OBST CRANE (ASN UNKNOWN) 402929N0801407W (0.519NM NE APCH END RWY 10C CANCELED</html:div>
+                  </event:formattedText>
+                </event:NOTAMTranslation>
+              </event:translation>
+            </event:NOTAM>
+          </event:textNOTAM>
+          <event:extension>
+            <fnse:EventExtension gml:id="FNSE_1_1792612190023081">
+              <fnse:classification>INTL</fnse:classification>
+              <fnse:accountId>KPIT</fnse:accountId>
+              <fnse:airportname>PITTSBURGH INTL</fnse:airportname>
+              <fnse:qline>KZOB/QOBXX/IV/M/AE/000/999/4029N08013W005</fnse:qline>
+              <fnse:lastUpdated>2026-10-21T19:49:00.000Z</fnse:lastUpdated>
+              <fnse:icaoLocation>KPIT</fnse:icaoLocation>
+            </fnse:EventExtension>
+          </event:extension>
+        </event:EventTimeSlice>
+      </event:timeSlice>
+    </event:Event>
+  </message:hasMember>
+  <message:hasMember>
+    <aixm:AirportHeliport gml:id="AH_1_1792612190023081">
+      <gml:identifier codeSpace="urn:uuid:">21a6703a-124b-496d-9884-693399cff186</gml:identifier>
+      <aixm:timeSlice>
+        <aixm:AirportHeliportTimeSlice gml:id="AH_TS_1_1792612190023081">
+          <gml:validTime>
+            <gml:TimeInstant gml:id="AH_TS_TI_1_1792612190023081">
+              <gml:timePosition>2026-10-21T19:49:00.000Z</gml:timePosition>
+            </gml:TimeInstant>
+          </gml:validTime>
+          <aixm:interpretation>SNAPSHOT</aixm:interpretation>
+          <aixm:designator>PIT</aixm:designator>
+          <aixm:name>PITTSBURGH INTL</aixm:name>
+          <aixm:locationIndicatorICAO>KPIT</aixm:locationIndicatorICAO>
+          <aixm:ARP>
+            <aixm:ElevatedPoint gml:id="EP_1_1792612190023081" srsName="urn:ogc:def:crs:EPSG::4326" srsDimension="2">
+              <gml:pos>40.491417 -80.232694</gml:pos>
+            </aixm:ElevatedPoint>
+          </aixm:ARP>
+          <aixm:extension>
+            <event:AirportHeliportExtension gml:id="AHE_EVENT_1_1792612190023081">
+              <event:theEvent xlink:href="#Event_1_1792612190023081"></event:theEvent>
+            </event:AirportHeliportExtension>
+          </aixm:extension>
+        </aixm:AirportHeliportTimeSlice>
+      </aixm:timeSlice>
+    </aixm:AirportHeliport>
+  </message:hasMember>
+</message:AIXMBasicMessage>

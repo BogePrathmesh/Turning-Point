@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<nas:NasMessage
+  xmlns:nas="http://www.faa.aero/nas/4.1"
+  xmlns:fx="http://www.fixm.aero/flight/4.0"
+  xmlns:fixm="http://www.fixm.aero/fixm/4.0"
+  xmlns:fb="http://www.fixm.aero/base/4.0"
+  xmlns:mesg="http://www.fixm.aero/messaging/4.0">
+  <nas:flight xsi:type="nas:TfdmFlightType"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <fx:arrival xsi:type="nas:TfdmArrivalType" destinationPointText="KDAL">
+      <nas:arrivalFix>
+        <nas:designatedPoint>CAMAL</nas:designatedPoint>
+      </nas:arrivalFix>
+      <nas:runwayPredicted runwayDesignator="13L" source="TFDM">
+        <nas:reportedTimestamp timeReference="UTC">2026-10-21T10:15:43.303Z</nas:reportedTimestamp>
+      </nas:runwayPredicted>
+      <nas:runwayAssigned runwayDesignator="13L" source="TFDM">
+        <nas:reportedTimestamp timeReference="UTC">2026-10-21T10:15:44.204Z</nas:reportedTimestamp>
+      </nas:runwayAssigned>
+    </fx:arrival>
+    <fx:departure xsi:type="nas:TfdmDepartureType" departurePointText="KSTL">
+      <nas:offBlockTime>
+        <nas:initial timeReference="UTC">2026-10-22T10:10:00Z</nas:initial>
+      </nas:offBlockTime>
+    </fx:departure>
+    <fx:flightIdentification xsi:type="nas:NasFlightIdentificationType" majorCarrierIdentifier="SWA" aircraftIdentification="SWA4055">
+      <nas:tfmsAirline>SWA</nas:tfmsAirline>
+      <nas:tfdmId codeSpace="urn:uuid">35558ac9-cc3b-4a72-b194-4181e6f0a24b</nas:tfdmId>
+      <nas:tfdmIdCreatorAirport locationIndicator="KDAL"/>
+      <nas:tfmId>160455414</nas:tfmId>
+    </fx:flightIdentification>
+    <nas:flightPlan>
+      <nas:tfdmIdOfFlightPlanUsedForSurfaceManagement>35558ac9-cc3b-4a72-b194-4181e6f0a24b</nas:tfdmIdOfFlightPlanUsedForSurfaceManagement>
+    </nas:flightPlan>
+    <nas:tfdmFlightCreationTime timeReference="UTC">2026-10-21T10:15:43.131Z</nas:tfdmFlightCreationTime>
+  </nas:flight>
+  <nas:metadata messageType="FlightAdd"/>
+</nas:NasMessage>

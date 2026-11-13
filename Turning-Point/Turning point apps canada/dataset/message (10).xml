@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns5:MessageCollection
+  xmlns:ns5="http://www.faa.aero/nas/3.0"
+  xmlns:ns2="http://www.fixm.aero/base/3.0"
+  xmlns:ns3="http://www.fixm.aero/flight/3.0"
+  xmlns:ns4="http://www.fixm.aero/foundation/3.0">
+  <message
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FlightMessageType">
+    <flight xsi:type="ns5:NasFlightType" centre="ZAB" source="DH" system="ATL" timestamp="2026-10-21T20:21:33.137Z">
+      <aircraftDescription xsi:type="ns5:NasAircraftType" equipmentQualifier="L">
+        <aircraftType>
+          <icaoModelIdentifier>B738</icaoModelIdentifier>
+        </aircraftType>
+      </aircraftDescription>
+      <arrival xsi:type="ns5:NasArrivalType" arrivalPoint="KBWI">
+        <runwayPositionAndTime>
+          <runwayTime>
+            <estimated time="2026-10-21T23:37:00Z"/>
+          </runwayTime>
+        </runwayPositionAndTime>
+      </arrival>
+      <departure xsi:type="ns5:NasDepartureType" departurePoint="KABQ">
+        <runwayPositionAndTime>
+          <runwayTime>
+            <actual time="2026-10-21T20:21:00Z"/>
+          </runwayTime>
+        </runwayPositionAndTime>
+      </departure>
+      <flightIdentification xsi:type="ns5:NasFlightIdentificationType" computerId="591" siteSpecificPlanId="311" aircraftIdentification="SWA1723"/>
+      <flightStatus xsi:type="ns5:NasFlightStatusType" fdpsFlightStatus="ACTIVE"/>
+      <gufi codeSpace="urn:uuid">79f98306-1ada-4516-9bc0-734e79e2bff6</gufi>
+      <operator>
+        <operatingOrganization>
+          <organization name="SWA"/>
+        </operatingOrganization>
+      </operator>
+      <supplementalData xsi:type="ns5:NasSupplementalDataType">
+        <additionalFlightInformation>
+          <nameValue name="MSG_SEQ_NO" value="4480639"/>
+          <nameValue name="FDPS_GUFI" value="us.fdps.2026-10-21T19:03:49Z.000/00/4BG"/>
+          <nameValue name="FLIGHT_PLAN_SEQ_NO" value="3"/>
+          <nameValue name="SOURCE_TIME_AND_SEQ" value="2021330990"/>
+          <nameValue name="SOURCE_TIME" value="20_21_33"/>
+        </additionalFlightInformation>
+      </supplementalData>
+      <coordination coordinationTime="2026-10-21T20:21:00Z" coordinationTimeHandling="D"/>
+      <flightPlan identifier="KA686294BG"/>
+    </flight>
+  </message>
+</ns5:MessageCollection>

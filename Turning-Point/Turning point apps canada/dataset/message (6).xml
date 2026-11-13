@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<message:AIXMBasicMessage
+  xmlns:message="http://www.aixm.aero/schema/5.1/message"
+  xmlns:gml="http://www.opengis.net/gml/3.2"
+  xmlns:aixm="http://www.aixm.aero/schema/5.1"
+  xmlns:event="http://www.aixm.aero/schema/5.1/event"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:fns="urn:us.gov.dot.faa.aim.fns"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:fnse="http://www.aixm.aero/schema/5.1/extensions/FAA/FNSE" xsi:schemaLocation="http://www.aixm.aero/schema/5.1/message https://aixm-xsd.cgifederal-aim.com/AIXM_BasicMessage.xsd" gml:id="NMS_ID_9219927919873388">
+  <message:hasMember>
+    <event:Event gml:id="Event_1_9219927919873388">
+      <gml:identifier codeSpace="urn:uuid:">ce1ac0b0-675a-48a3-8c01-665c3ac3d280</gml:identifier>
+      <event:timeSlice>
+        <event:EventTimeSlice gml:id="Event_TS_1_9219927919873388">
+          <gml:validTime>
+            <gml:TimePeriod gml:id="Event_TS_TP_1_9219927919873388">
+              <gml:beginPosition>2026-10-22T16:00:00.000Z</gml:beginPosition>
+              <gml:endPosition>2026-10-22T21:00:00.000Z</gml:endPosition>
+            </gml:TimePeriod>
+          </gml:validTime>
+          <aixm:interpretation>BASELINE</aixm:interpretation>
+          <aixm:sequenceNumber>1</aixm:sequenceNumber>
+          <aixm:correctionNumber>0</aixm:correctionNumber>
+          <event:scenario>980</event:scenario>
+          <event:textNOTAM>
+            <event:NOTAM gml:id="NOTAM_1_9219927919873388">
+              <event:number>026</event:number>
+              <event:type>N</event:type>
+              <event:issued>2026-10-21T19:55:00.000Z</event:issued>
+              <event:affectedFIR>ZMP</event:affectedFIR>
+              <event:location>STC</event:location>
+              <event:effectiveStart>202610221600</event:effectiveStart>
+              <event:effectiveEnd>202610222100</event:effectiveEnd>
+              <event:text>AIRSPACE UAS WI AN AREA DEFINED AS 3NM RADIUS OF 452408.60N0935732.50W (2.6NM SSE 8Y6) SFC-200FT AGL</event:text>
+              <event:translation>
+                <event:NOTAMTranslation gml:id="NT_1_9219927919873388">
+                  <event:type>LOCAL_FORMAT</event:type>
+                  <event:simpleText>!STC 10/026 STC AIRSPACE UAS WI AN AREA DEFINED AS 3NM RADIUS OF 452408.60N0935732.50W (2.6NM SSE 8Y6) SFC-200FT AGL 2610221600-2610222100</event:simpleText>
+                </event:NOTAMTranslation>
+              </event:translation>
+            </event:NOTAM>
+          </event:textNOTAM>
+          <event:extension>
+            <fnse:EventExtension gml:id="FNSE_1_9219927919873388">
+              <fnse:classification>DOM</fnse:classification>
+              <fnse:accountId>STC</fnse:accountId>
+              <fnse:airportname>ST CLOUD SKY CENTRAL</fnse:airportname>
+              <fnse:originID>KFTWYFYX</fnse:originID>
+              <fnse:lastUpdated>2026-10-21T19:55:00.000Z</fnse:lastUpdated>
+              <fnse:icaoLocation>KSTC</fnse:icaoLocation>
+            </fnse:EventExtension>
+          </event:extension>
+        </event:EventTimeSlice>
+      </event:timeSlice>
+    </event:Event>
+  </message:hasMember>
+  <message:hasMember>
+    <aixm:AirportHeliport gml:id="AH_1_9219927919873388">
+      <gml:identifier codeSpace="urn:uuid:">85d3c84b-b979-4e62-85a3-7514c0a8aa8d</gml:identifier>
+      <aixm:timeSlice>
+        <aixm:AirportHeliportTimeSlice gml:id="AH_TS_1_9219927919873388">
+          <gml:validTime>
+            <gml:TimeInstant gml:id="AH_TS_TI_1_9219927919873388">
+              <gml:timePosition>2026-10-21T19:55:00.000Z</gml:timePosition>
+            </gml:TimeInstant>
+          </gml:validTime>
+          <aixm:interpretation>SNAPSHOT</aixm:interpretation>
+          <aixm:designator>STC</aixm:designator>
+          <aixm:name>ST CLOUD SKY CENTRAL</aixm:name>
+          <aixm:locationIndicatorICAO>KSTC</aixm:locationIndicatorICAO>
+          <aixm:ARP>
+            <aixm:ElevatedPoint gml:id="EP_1_9219927919873388" srsName="urn:ogc:def:crs:EPSG::4326" srsDimension="2">
+              <gml:pos>45.546222 -94.059389</gml:pos>
+            </aixm:ElevatedPoint>
+          </aixm:ARP>
+          <aixm:extension>
+            <event:AirportHeliportExtension gml:id="AHE_EVENT_1_9219927919873388">
+              <event:theEvent xlink:href="#Event_1_9219927919873388"></event:theEvent>
+            </event:AirportHeliportExtension>
+          </aixm:extension>
+        </aixm:AirportHeliportTimeSlice>
+      </aixm:timeSlice>
+    </aixm:AirportHeliport>
+  </message:hasMember>
+</message:AIXMBasicMessage>

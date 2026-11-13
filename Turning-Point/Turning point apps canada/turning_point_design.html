@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventInsight AI — MVP1 Prototype</title>
+<style>
+:root{
+  --bg:#0b0f17;--panel:#121824;--panel2:#171e2b;--panel3:#0f141e;--text:#edf2f7;
+  --muted:#8e9aaa;--line:#263041;--primary:#4f6ff0;--primary2:#6d83ff;--green:#35c878;
+  --amber:#f3b84b;--red:#ef6262;--cyan:#36c6d9;--shadow:0 18px 50px rgba(0,0,0,.22);--radius:12px;
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}
+.hidden{display:none!important}.screen{min-height:100vh}.muted{color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 13px;border-radius:9px;font-weight:700;font-size:12px}.btn:hover{border-color:#3b4a64;background:#1b2433}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.primary:hover{background:var(--primary2)}
+.btn.danger{color:#ffb0b0;border-color:#563035}.btn.small{padding:7px 10px;font-size:11px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800;background:#202938;color:#b7c2d0;white-space:nowrap}.badge.green{background:#153b2b;color:#6de0a1}.badge.amber{background:#3d301a;color:#f7c96f}.badge.red{background:#432327;color:#ff9999}.badge.blue{background:#1b2850;color:#9fb0ff}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+/* AUTH */
+.auth{display:grid;grid-template-columns:1.15fr .85fr;min-height:100vh}.auth-left{padding:70px;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(circle at 20% 20%,#26356f 0,#151b34 42%,#0b0f17 75%)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900}.logo-mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#5c76ff,#33c6d5);color:#fff}.auth-left h1{font-size:50px;line-height:1.02;letter-spacing:-2px;margin:28px 0 16px}.auth-left p{max-width:620px;color:#aeb8c8;line-height:1.7}.flow{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.flow span{border:1px solid #34405b;background:#11182a;padding:8px 10px;border-radius:8px;color:#c8d2e2;font-size:11px}.auth-right{display:flex;align-items:center;justify-content:center;padding:35px;background:#0d121b}.auth-card{width:min(430px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow)}.auth-card h2{margin:0 0 7px}.field{margin:13px 0}.field label{display:block;font-size:11px;font-weight:800;color:#aeb8c8;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:#0c121c;color:var(--text);border-radius:8px;padding:10px 11px;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,111,240,.15)}
+/* APP SHELL */
+.app{display:none;min-height:100vh}.sidebar{position:fixed;left:0;top:0;bottom:0;width:235px;background:#080c13;border-right:1px solid #1b2431;padding:14px 10px;display:flex;flex-direction:column;z-index:20}.sidebar .brand{padding:8px 10px 18px;border-bottom:1px solid #1b2431;margin-bottom:10px}.brand-name{font-weight:900}.brand-sub{font-size:9px;color:#748095;margin-top:2px}.nav-section{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#667184;font-weight:900;padding:13px 9px 5px}.nav{display:flex;flex-direction:column;gap:2px}.nav button{border:0;background:transparent;color:#aeb8c8;text-align:left;padding:9px 10px;border-radius:8px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:10px}.nav button:hover,.nav button.active{background:#1c2638;color:#fff}.nav .ico{width:18px;text-align:center;color:#8190a7}.sidebar-bottom{margin-top:auto;border-top:1px solid #1b2431;padding-top:10px}.user-mini{display:flex;align-items:center;gap:9px;padding:7px 8px}.avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#3147a4;color:#fff;font-size:10px;font-weight:900}.user-mini strong{font-size:11px;display:block}.user-mini span{font-size:9px;color:#78859a}
+.main{margin-left:235px;min-height:100vh}.topbar{height:48px;background:#111722;border-bottom:1px solid #222c3b;display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:15}.crumb{font-size:11px;color:#77849a}.crumb strong{color:#aebcff}.top-actions{display:flex;gap:8px;align-items:center}.org{font-size:10px;color:#aab6c7;background:#172033;border:1px solid #2b3850;padding:7px 9px;border-radius:7px}.search{width:300px;background:#0c121b;border:1px solid var(--line);color:#dce4ef;padding:8px 10px;border-radius:8px;font-size:11px}.content{padding:22px;max-width:1500px;margin:auto}.page{display:none}.page.active{display:block}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.page-head h1{font-size:24px;margin:0 0 5px;letter-spacing:-.5px}.page-head p{font-size:11px;color:var(--muted);margin:0}.actions{display:flex;gap:7px;flex-wrap:wrap}
+/* CARDS */
+.grid{display:grid;gap:12px}.kpis{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:1.35fr .65fr}.three{grid-template-columns:repeat(3,1fr)}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px;box-shadow:0 8px 25px rgba(0,0,0,.08)}.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.card-title h3{font-size:13px;margin:0}.kpi .label{font-size:10px;color:#8794a8;font-weight:800}.kpi .num{font-size:25px;font-weight:900;margin:7px 0 3px}.trend{font-size:10px;color:#55d890;font-weight:800}.mini{font-size:10px;color:var(--muted)}
+/* CHART */
+.chart{height:205px;display:flex;align-items:flex-end;gap:7px;padding:18px 4px 15px;border-bottom:1px solid #222b39}.bar{flex:1;background:linear-gradient(to top,#4f6ff0,#8196ff);border-radius:5px 5px 2px 2px;min-width:8px;position:relative}.bar span{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);font-size:8px;color:#758198}
+/* INSIGHTS */
+.insight{padding:10px;border:1px solid var(--line);border-radius:9px;background:#101721;margin-bottom:7px}.insight strong{font-size:11px}.insight p{margin:4px 0 0;color:#8895a8;font-size:10px;line-height:1.45}.prompt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#0f151f;color:#bfc9d8;padding:9px;border-radius:8px;margin-bottom:6px;font-size:10px}.prompt:hover{border-color:#526be0;background:#151e30}
+/* TABLE */
+.table-wrap{overflow:auto}.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.filters input,.filters select{background:#0c121b;color:#dce4ef;border:1px solid var(--line);padding:8px 9px;border-radius:8px;font-size:10px}table{width:100%;border-collapse:collapse}th{text-align:left;padding:9px;font-size:9px;color:#738096;text-transform:uppercase;border-bottom:1px solid var(--line)}td{padding:10px 9px;border-bottom:1px solid #202a38;font-size:10px;color:#c7d0dd}tbody tr:hover{background:#111925}.clickable{cursor:pointer}
+/* AI */
+.ai-layout{display:grid;grid-template-columns:240px 1fr 280px;gap:12px}.entity-list button{width:100%;text-align:left;border:1px solid var(--line);background:#0f151f;color:#aeb8c8;padding:9px;border-radius:8px;margin-bottom:6px;font-size:10px}.entity-list button.active{background:#1a2850;border-color:#526be0;color:#cbd5ff}.chat{min-height:540px;display:flex;flex-direction:column}.chat-body{flex:1;overflow:auto;padding:3px}.bubble{max-width:78%;padding:11px 12px;border-radius:11px;margin:8px 0;font-size:11px;line-height:1.55}.bubble.ai{background:#19212e;border:1px solid #293548;border-top-left-radius:4px}.bubble.user{margin-left:auto;background:#4f6ff0;color:#fff;border-top-right-radius:4px}.chat-input{display:flex;gap:7px;border-top:1px solid var(--line);padding-top:10px}.chat-input input{flex:1;background:#0c121b;color:#fff;border:1px solid var(--line);border-radius:8px;padding:9px;font-size:10px}
+/* DATA SOURCES */
+.source-card{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:13px;border:1px solid var(--line);border-radius:10px;background:#0f151f;margin-bottom:8px}.source-left{display:flex;gap:10px;align-items:center}.source-icon{width:34px;height:34px;border-radius:9px;background:#1b2850;display:grid;place-items:center;color:#aebcff;font-weight:900}.source-card strong{font-size:11px}.source-card small{display:block;color:#78859a;font-size:9px;margin-top:2px}.source-actions{display:flex;gap:6px}
+/* MONITOR */
+.monitor{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}.monitor-box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px}.monitor-box .big{font-size:22px;font-weight:900;margin-top:5px}.progress{height:6px;background:#202a38;border-radius:99px;overflow:hidden;margin-top:8px}.progress span{display:block;height:100%;background:#4f6ff0;border-radius:99px}
+/* ADMIN */
+.tabs{display:flex;gap:5px;border-bottom:1px solid var(--line);margin-bottom:13px}.tabs button{border:0;background:transparent;color:#7f8da1;padding:9px 11px;font-size:11px;font-weight:800}.tabs button.active{color:#aabaff;border-bottom:2px solid #536cf0}.setting-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.setting-row:last-child{border-bottom:0}.setting-row strong{font-size:11px}.setting-row p{font-size:9px;color:#778499;margin:4px 0 0}.toggle{width:38px;height:21px;border-radius:20px;background:#2b3547;padding:2px;border:0}.toggle span{display:block;width:17px;height:17px;border-radius:50%;background:#fff;transition:.2s}.toggle.on{background:#4f6ff0}.toggle.on span{transform:translateX(17px)}
+/* MODAL / DRAWER / TOAST */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}.modal{width:min(720px,100%);max-height:90vh;overflow:auto;background:#121824;border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow)}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.modal-head h2{font-size:17px;margin:0}.close{border:0;background:#1c2534;color:#cbd5e1;border-radius:7px;width:29px;height:29px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}.full{grid-column:1/-1}.drawer{position:fixed;right:0;top:0;bottom:0;width:min(480px,95vw);background:#111824;border-left:1px solid var(--line);z-index:55;transform:translateX(100%);transition:.22s;padding:18px;overflow:auto}.drawer.open{transform:none}.code{background:#080d14;border:1px solid #202a38;color:#c9d9ff;padding:12px;border-radius:9px;font:10px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap}.kv{display:grid;grid-template-columns:120px 1fr;gap:7px;padding:8px 0;border-bottom:1px solid var(--line);font-size:10px}.kv b{color:#77859a}.toast{position:fixed;right:20px;bottom:20px;background:#182233;border:1px solid #33415a;color:#dbe5f5;padding:11px 14px;border-radius:9px;box-shadow:var(--shadow);display:none;z-index:100;font-size:11px}
+@media(max-width:1050px){.auth{grid-template-columns:1fr}.auth-left{display:none}.sidebar{width:70px}.sidebar .brand-name,.sidebar .brand-sub,.nav-section,.nav button span:not(.ico),.user-mini div:not(.avatar){display:none}.nav button{justify-content:center}.main{margin-left:70px}.ai-layout{grid-template-columns:190px 1fr}.ai-layout>div:last-child{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}.search{width:180px}}
+@media(max-width:700px){.topbar{padding:0 10px}.crumb{display:none}.search{display:none}.content{padding:14px}.kpis{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.monitor{grid-template-columns:1fr 1fr}.ai-layout{grid-template-columns:1fr}.ai-layout>div:first-child{display:none}.page-head{display:block}.actions{margin-top:10px}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<section id="loginScreen" class="screen auth">
+  <div class="auth-left">
+    <div class="logo"><div class="logo-mark">E</div><div>EventInsight AI<div class="brand-sub">AI-POWERED EVENT INTELLIGENCE</div></div></div>
+    <h1>Turn enterprise events into intelligence.</h1>
+    <p>Connect event brokers or existing enterprise databases, organize incoming information into business entities, and use AI to search, analyze and report on operational data.</p>
+    <div class="flow"><span>Broker</span><span>Ingestion</span><span>Classification</span><span>Storage</span><span>AI</span><span>Insights</span></div>
+  </div>
+  <div class="auth-right">
+    <div class="auth-card">
+      <h2>Sign in</h2><p class="muted" style="font-size:11px">Demo workspace for the EventInsight AI prototype.</p>
+      <div class="field"><label>EMAIL</label><input id="loginEmail" value="john.doe@reliance.com"></div>
+      <div class="field"><label>PASSWORD</label><input type="password" value="demo123"></div>
+      <button class="btn primary" style="width:100%;margin-top:8px" onclick="showWorkspace()">Sign in to workspace</button>
+      <div style="margin-top:12px;padding:10px;border:1px solid var(--line);border-radius:8px;background:#0f151f;font-size:10px;color:#8290a4">Demo only — no real authentication is performed.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKSPACE SELECT -->
+<section id="workspaceScreen" class="screen hidden auth" style="background:#0b0f17">
+  <div class="auth-left" style="display:flex"><div class="logo"><div class="logo-mark">E</div><div>EventInsight AI</div></div><h1 style="font-size:42px">Choose your workspace.</h1><p>Tenant isolation is represented by the selected organization context.</p></div>
+  <div class="auth-right"><div class="auth-card"><h2>Select organization</h2><p class="muted" style="font-size:11px">All connections, messages, dashboards and AI activity belong to the selected organization.</p><div class="field"><label>ORGANIZATION</label><select id="workspaceSelect"><option>Reliance Industries</option><option>Demo Aviation Corp</option><option>Global Markets Ltd</option></select></div><div class="field"><label>PRIMARY DOMAIN</label><select><option>Aviation</option><option>Banking</option><option>Stock Market</option></select></div><button class="btn primary" style="width:100%" onclick="enterApp()">Enter workspace</button></div></div>
+</section>
+
+<!-- APP -->
+<div id="app" class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo"><div class="logo-mark">E</div><div><div class="brand-name">EventInsight AI</div><div class="brand-sub">ENTERPRISE EVENT INTELLIGENCE</div></div></div></div>
+  <div class="nav-section">Workspace</div>
+  <nav class="nav">
+    <button data-page="overview" class="active" onclick="route('overview')"><span class="ico">⌂</span><span>Overview</span></button>
+    <button data-page="ai" onclick="route('ai')"><span class="ico">✦</span><span>AI Assistant</span></button>
+    <button data-page="messages" onclick="route('messages')"><span class="ico">≡</span><span>Messages</span></button>
+    <button data-page="analytics" onclick="route('analytics')"><span class="ico">▥</span><span>Analytics</span></button>
+  </nav>
+  <div class="nav-section">Configuration</div>
+  <nav class="nav">
+    <button data-page="sources" onclick="route('sources')"><span class="ico">◈</span><span>Data Sources</span></button>
+    <button data-page="monitor" onclick="route('monitor')"><span class="ico">⌁</span><span>Ingestion Monitor</span></button>
+    <button data-page="saved" onclick="route('saved')"><span class="ico">▱</span><span>Saved Searches</span></button>
+    <button data-page="reports" onclick="route('reports')"><span class="ico">▤</span><span>Reports</span></button>
+  </nav>
+  <div class="nav-section">Administration</div>
+  <nav class="nav">
+    <button data-page="organization" onclick="route('organization')"><span class="ico">▥</span><span>Organization</span></button>
+    <button data-page="audit" onclick="route('audit')"><span class="ico">◷</span><span>Audit Log</span></button>
+    <button data-page="status" onclick="route('status')"><span class="ico">◉</span><span>System Status</span></button>
+  </nav>
+  <div class="sidebar-bottom"><div class="user-mini"><div class="avatar">JD</div><div><strong>John Doe</strong><span>Organization Admin</span></div></div></div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="crumb">Organization: <strong id="crumbOrg">Reliance Industries</strong> &nbsp;·&nbsp; Domain: <strong>Aviation</strong> &nbsp;·&nbsp; <strong id="crumbPage">Overview</strong></div>
+    <div class="top-actions"><input class="search" placeholder="Search messages, entities, reports..." oninput="globalSearch(this.value)"><span class="badge green"><span class="dot"></span>Workspace healthy</span><select class="org" id="topOrg" onchange="switchOrg(this.value)"><option>Reliance Industries</option><option>Demo Aviation Corp</option><option>Global Markets Ltd</option></select><div class="avatar">JD</div></div>
+  </header>
+
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <section id="page-overview" class="page active">
+      <div class="page-head"><div><h1>Overview</h1><p>Operational view of your event intelligence workspace.</p></div><div class="actions"><button class="btn" onclick="route('messages')">Explore messages</button><button class="btn primary" onclick="route('ai')">Ask AI</button></div></div>
+      <div class="grid kpis">
+        <div class="card kpi"><div class="label">MESSAGES RECEIVED · 24H</div><div class="num" id="kpiMessages">284,612</div><div class="trend">↑ 18.4% vs previous 24h</div></div>
+        <div class="card kpi"><div class="label">ACTIVE CONSUMERS</div><div class="num">6</div><div class="trend">All configured consumers running</div></div>
+        <div class="card kpi"><div class="label">BUSINESS ENTITIES</div><div class="num">8</div><div class="trend">3 detected recently</div></div>
+        <div class="card kpi"><div class="label">AI QUERIES · 24H</div><div class="num" id="kpiAI">42</div><div class="trend">↑ 9 new conversations</div></div>
+      </div>
+      <div class="grid two" style="margin-top:12px">
+        <div class="card"><div class="card-title"><h3>Message volume</h3><span class="mini">Last 12 hours · live</span></div><div class="chart" id="overviewChart"></div></div>
+        <div class="card"><div class="card-title"><h3>AI Insights</h3><span class="badge blue">Generated</span></div>
+          <div class="insight"><strong>Flight activity increased by 18%</strong><p>Flight messages are higher than the previous 12-hour period.</p></div>
+          <div class="insight"><strong>Flight messages represent 62% of traffic</strong><p>Weather and Airport events make up most of the remaining traffic.</p></div>
+          <div class="insight"><strong>3 new message types detected</strong><p>The classification engine found previously unseen structures.</p></div>
+        </div>
+      </div>
+      <div class="grid two" style="margin-top:12px">
+        <div class="card"><div class="card-title"><h3>Recent event activity</h3><button class="btn small" onclick="route('messages')">View all</button></div><div id="liveFeed"></div></div>
+        <div class="card"><div class="card-title"><h3>Suggested questions</h3><span class="mini">Based on available data</span></div>
+          <button class="prompt" onclick="usePrompt('How many Flight messages were received during the last 12 hours?')">How many Flight messages were received during the last 12 hours?</button>
+          <button class="prompt" onclick="usePrompt('Compare Weather messages received yesterday versus today.')">Compare Weather messages received yesterday versus today.</button>
+          <button class="prompt" onclick="usePrompt('Which entities generated the highest message volume?')">Which entities generated the highest message volume?</button>
+          <button class="prompt" onclick="usePrompt('Identify unusual traffic patterns.')">Identify unusual traffic patterns.</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI -->
+    <section id="page-ai" class="page">
+      <div class="page-head"><div><h1>AI Assistant</h1><p>Ask questions about stored event data using natural language.</p></div></div>
+      <div class="ai-layout">
+        <div class="card"><div class="card-title"><h3>Entities</h3><span class="mini">Optional</span></div><p class="mini" style="line-height:1.5">Select entities to narrow the AI context.</p><div class="entity-list" id="entityList"></div></div>
+        <div class="card chat"><div class="card-title"><h3>EventInsight AI</h3><span class="badge green"><span class="dot"></span>Ready</span></div><div class="chat-body" id="chatBody"><div class="bubble ai"><b>AI workspace overview</b><br>I've analyzed the currently available event data. You can ask about volumes, message types, unusual patterns, delays, airport activity and more.</div><div class="bubble ai">Try: <b>"Which Flight messages contain delayed departures?"</b></div></div><div class="chat-input"><input id="aiInput" placeholder="Ask about your event data..." onkeydown="if(event.key==='Enter') sendAI()"><button class="btn primary" onclick="sendAI()">Ask</button></div></div>
+        <div class="card"><div class="card-title"><h3>Suggested Questions</h3></div><button class="prompt" onclick="usePrompt('Compare Flight and Weather messages.')">Compare Flight and Weather messages.</button><button class="prompt" onclick="usePrompt('Show the most active producers.')">Show the most active producers.</button><button class="prompt" onclick="usePrompt('Which entities generated errors?')">Which entities generated errors?</button><button class="prompt" onclick="usePrompt('Summarize airport activity.')">Summarize airport activity.</button><button class="prompt" onclick="usePrompt('Generate an operational report.')">Generate an operational report.</button></div>
+      </div>
+    </section>
+
+    <!-- MESSAGES -->
+    <section id="page-messages" class="page">
+      <div class="page-head"><div><h1>Messages</h1><p>Search, filter, inspect and export captured event messages.</p></div><div class="actions"><button class="btn" onclick="saveCurrentSearch()">☆ Save search</button><button class="btn primary" onclick="exportMessages()">↓ Export JSON</button></div></div>
+      <div class="card"><div class="filters"><input id="msgSearch" placeholder="Search message content..." oninput="renderMessages()"><select id="typeFilter" onchange="renderMessages()"><option>All entities</option><option>Flight</option><option>Weather</option><option>NOTAM</option><option>Airport</option><option>Aircraft</option><option>Market</option></select><select id="sourceFilter" onchange="renderMessages()"><option>All sources</option><option>Flight Operations</option><option>Weather Advisory</option><option>Airport Ops</option><option>Market Feed</option></select><select id="timeFilter"><option>Last 24 hours</option><option>Last 7 days</option><option>Custom</option></select><button class="btn small" onclick="resetFilters()">Reset</button></div><div class="table-wrap"><table><thead><tr><th>Time</th><th>Entity</th><th>Summary</th><th>Source</th><th>Format</th><th>Status</th></tr></thead><tbody id="messageTable"></tbody></table></div></div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section id="page-analytics" class="page">
+      <div class="page-head"><div><h1>Analytics</h1><p>Operational analytics built from stored event data.</p></div><div class="actions"><button class="btn" onclick="toast('Analytics refreshed')">↻ Refresh</button><button class="btn primary" onclick="route('reports')">Generate report</button></div></div>
+      <div class="grid three"><div class="card"><div class="card-title"><h3>Entity volume</h3></div><div id="entityBars"></div></div><div class="card"><div class="card-title"><h3>Message formats</h3></div><div id="formatBars"></div></div><div class="card"><div class="card-title"><h3>Top producers</h3></div><div id="producerList"></div></div></div>
+      <div class="card" style="margin-top:12px"><div class="card-title"><h3>Traffic trend</h3><span class="mini">12-hour view</span></div><div class="chart" id="analyticsChart"></div></div>
+    </section>
+
+    <!-- DATA SOURCES -->
+    <section id="page-sources" class="page">
+      <div class="page-head"><div><h1>Data Sources</h1><p>Connect Solace brokers or existing enterprise databases.</p></div><div class="actions"><button class="btn" onclick="openModal('dbModal')">+ Existing database</button><button class="btn primary" onclick="openModal('brokerModal')">+ Solace broker</button></div></div>
+      <div class="card"><div class="card-title"><h3>Configured sources</h3><span class="mini">Owned by current organization</span></div>
+        <div class="source-card"><div class="source-left"><div class="source-icon">S</div><div><strong>Flight Operations Broker</strong><small>Solace PubSub+ · flight.events · Consume mode</small></div></div><div class="source-actions"><span class="badge green"><span class="dot"></span>Connected</span><button class="btn small" onclick="openModal('brokerModal')">Edit</button></div></div>
+        <div class="source-card"><div class="source-left"><div class="source-icon">S</div><div><strong>Weather Advisory Bus</strong><small>Solace PubSub+ · weather.advisory · Consume mode</small></div></div><div class="source-actions"><span class="badge amber">Degraded</span><button class="btn small" onclick="openModal('brokerModal')">Edit</button></div></div>
+        <div class="source-card"><div class="source-left"><div class="source-icon">DB</div><div><strong>Historical Aviation Data</strong><small>PostgreSQL · existing enterprise database</small></div></div><div class="source-actions"><span class="badge green"><span class="dot"></span>Connected</span><button class="btn small" onclick="openModal('dbModal')">Edit</button></div></div>
+      </div>
+    </section>
+
+    <!-- MONITOR -->
+    <section id="page-monitor" class="page">
+      <div class="page-head"><div><h1>Ingestion Monitor</h1><p>Watch background consumers and message processing.</p></div><div class="actions"><button class="btn" onclick="toast('Consumer statuses refreshed')">↻ Refresh</button></div></div>
+      <div class="monitor"><div class="monitor-box"><div class="mini">ACTIVE CONSUMERS</div><div class="big">6</div><span class="badge green">Running</span></div><div class="monitor-box"><div class="mini">MESSAGES / MIN</div><div class="big" id="rate">2,418</div><span class="trend">Live</span></div><div class="monitor-box"><div class="mini">CLASSIFIED</div><div class="big">99.2%</div><div class="progress"><span style="width:99.2%"></span></div></div><div class="monitor-box"><div class="mini">FAILED</div><div class="big">17</div><span class="badge red">Needs review</span></div></div>
+      <div class="card"><div class="card-title"><h3>Background consumers</h3><span class="mini">Independent from web UI</span></div><div class="table-wrap"><table><thead><tr><th>Consumer</th><th>Source</th><th>Destination</th><th>Mode</th><th>Rate</th><th>Status</th></tr></thead><tbody><tr><td>consumer-flight-01</td><td>Flight Operations Broker</td><td>flight.events</td><td>Consume</td><td>1,820/min</td><td><span class="badge green">Running</span></td></tr><tr><td>consumer-weather-01</td><td>Weather Advisory Bus</td><td>weather.advisory</td><td>Consume</td><td>412/min</td><td><span class="badge amber">Degraded</span></td></tr><tr><td>consumer-airport-01</td><td>Flight Operations Broker</td><td>airport.ops</td><td>Consume</td><td>186/min</td><td><span class="badge green">Running</span></td></tr><tr><td>consumer-market-01</td><td>Market Feed</td><td>trades</td><td>Consume</td><td>2,940/min</td><td><span class="badge green">Running</span></td></tr></tbody></table></div></div>
+    </section>
+
+    <!-- SAVED -->
+    <section id="page-saved" class="page"><div class="page-head"><div><h1>Saved Searches</h1><p>Saved filters and queries belonging to the current user.</p></div></div><div class="card"><table><thead><tr><th>Name</th><th>Filters</th><th>Created</th><th>Action</th></tr></thead><tbody><tr><td>Delayed departures – BOM</td><td>Entity: Flight · Airport: BOM · Status: Delayed</td><td>Today</td><td><button class="btn small" onclick="route('messages');toast('Saved search applied')">Open</button></td></tr><tr><td>Weather alerts</td><td>Entity: Weather · Severity: High</td><td>Yesterday</td><td><button class="btn small" onclick="route('messages');toast('Saved search applied')">Open</button></td></tr><tr><td>Airport operational issues</td><td>Entity: Airport · Last 24h</td><td>Sep 20</td><td><button class="btn small" onclick="route('messages');toast('Saved search applied')">Open</button></td></tr></tbody></table></div></section>
+
+    <!-- REPORTS -->
+    <section id="page-reports" class="page"><div class="page-head"><div><h1>Reports</h1><p>Generate and review AI-assisted operational reports.</p></div><button class="btn primary" onclick="generateReport()">+ Generate report</button></div><div class="grid three"><div class="card"><div class="card-title"><h3>Flight Ops — Daily</h3><span class="badge green">Ready</span></div><p class="mini">AI-generated operational summary with message volumes, delays and notable patterns.</p><button class="btn small" onclick="toast('Report opened')">Open report</button></div><div class="card"><div class="card-title"><h3>Weather Impact</h3><span class="badge green">Ready</span></div><p class="mini">Weather events correlated with aviation traffic.</p><button class="btn small" onclick="toast('Report opened')">Open report</button></div><div class="card"><div class="card-title"><h3>New Message Types</h3><span class="badge blue">AI</span></div><p class="mini">Recently detected message structures and entities.</p><button class="btn small" onclick="toast('Report opened')">Open report</button></div></div></section>
+
+    <!-- ORGANIZATION -->
+    <section id="page-organization" class="page"><div class="page-head"><div><h1>Organization</h1><p>Manage organization profile, users, roles and security settings.</p></div></div><div class="card"><div class="tabs"><button class="active" data-tab="profile" onclick="orgTab('profile',this)">Profile</button><button data-tab="users" onclick="orgTab('users',this)">Users</button><button data-tab="roles" onclick="orgTab('roles',this)">Roles</button><button data-tab="security" onclick="orgTab('security',this)">Security</button></div><div id="orgProfile"><div class="form-grid"><div class="field"><label>ORGANIZATION NAME</label><input value="Reliance Industries"></div><div class="field"><label>PRIMARY DOMAIN</label><select><option>Aviation</option><option>Banking</option><option>Stock Market</option></select></div><div class="field full"><label>DESCRIPTION</label><input value="Aviation operations and logistics"></div></div><button class="btn primary" onclick="toast('Organization changes saved')">Save changes</button></div><div id="orgUsers" class="hidden"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last login</th></tr></thead><tbody><tr><td>John Doe</td><td>john.doe@reliance.com</td><td>Organization Admin</td><td><span class="badge green">Active</span></td><td>Just now</td></tr><tr><td>Asha Rao</td><td>asha.rao@reliance.com</td><td>Analyst</td><td><span class="badge green">Active</span></td><td>2h ago</td></tr><tr><td>Vikram Shah</td><td>vikram.shah@reliance.com</td><td>Operator</td><td><span class="badge">Invited</span></td><td>—</td></tr></tbody></table></div><div id="orgRoles" class="hidden"><div class="grid two"><div class="card" style="background:#0f151f"><b style="font-size:11px">Organization Admin</b><p class="mini">Full access to connections, users and data.</p></div><div class="card" style="background:#0f151f"><b style="font-size:11px">Analyst</b><p class="mini">Explore messages, run AI queries and generate reports.</p></div><div class="card" style="background:#0f151f"><b style="font-size:11px">Operator</b><p class="mini">Manage connections and ingestion, with limited AI access.</p></div><div class="card" style="background:#0f151f"><b style="font-size:11px">Viewer</b><p class="mini">Read-only access to dashboards and reports.</p></div></div></div><div id="orgSecurity" class="hidden"><div class="setting-row"><div><strong>Require SSO</strong><p>Force organization members to sign in through SSO.</p></div><button class="toggle" onclick="toggle(this)"><span></span></button></div><div class="setting-row"><div><strong>Session timeout</strong><p>Automatically sign out after 12 hours idle.</p></div><button class="toggle on" onclick="toggle(this)"><span></span></button></div><div class="setting-row"><div><strong>API access</strong><p>Allow programmatic access through API keys.</p></div><button class="toggle" onclick="toggle(this)"><span></span></button></div></div></div></section>
+
+    <!-- AUDIT -->
+    <section id="page-audit" class="page"><div class="page-head"><div><h1>Audit Log</h1><p>Every important action taken within this organization's workspace.</p></div></div><div class="card"><div class="filters"><select><option>User: All</option><option>John Doe</option><option>Asha Rao</option><option>System</option></select><select><option>Action: All</option><option>AI query</option><option>Connection</option><option>Report</option></select><select><option>Last 7 days</option><option>Last 30 days</option></select></div><table><thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Resource</th><th>Status</th></tr></thead><tbody><tr><td>09:14:02</td><td>John Doe</td><td>AI query executed</td><td>Compare Weather messages...</td><td><span class="badge green">Success</span></td></tr><tr><td>08:52:41</td><td>Asha Rao</td><td>Search saved</td><td>Delayed departures – BOM</td><td><span class="badge green">Success</span></td></tr><tr><td>08:30:19</td><td>John Doe</td><td>Connection modified</td><td>Weather Advisory Bus</td><td><span class="badge green">Success</span></td></tr><tr><td>07:58:03</td><td>System</td><td>Connection error</td><td>Weather Advisory Bus</td><td><span class="badge red">Failed</span></td></tr><tr><td>07:02:10</td><td>John Doe</td><td>Report generated</td><td>Flight Ops – Daily</td><td><span class="badge green">Success</span></td></tr></tbody></table></div></section>
+
+    <!-- STATUS -->
+    <section id="page-status" class="page"><div class="page-head"><div><h1>System Status</h1><p>Operational health of the services powering your workspace.</p></div></div><div class="grid three"><div class="card"><div class="card-title"><h3>Event broker connectivity</h3><span class="badge green">● Operational</span></div></div><div class="card"><div class="card-title"><h3>Ingestion services</h3><span class="badge green">● Operational</span></div></div><div class="card"><div class="card-title"><h3>Classification engine</h3><span class="badge green">● Operational</span></div></div><div class="card"><div class="card-title"><h3>Data storage</h3><span class="badge green">● Operational</span></div></div><div class="card"><div class="card-title"><h3>AI query service</h3><span class="badge amber">● Degraded</span></div></div><div class="card"><div class="card-title"><h3>Real-time updates</h3><span class="badge green">● Operational</span></div></div></div></section>
+
+  </div>
+</main>
+</div>
+
+<!-- BROKER MODAL -->
+<div id="brokerModal" class="overlay"><div class="modal"><div class="modal-head"><h2>Configure Solace Event Broker</h2><button class="close" onclick="closeModal('brokerModal')">×</button></div><p class="mini">Connection details are stored within the organization's private configuration area.</p><div class="form-grid"><div class="field"><label>CONNECTION NAME</label><input value="Flight Operations Broker"></div><div class="field"><label>DESCRIPTION</label><input value="Aviation flight events"></div><div class="field"><label>HOST NAME / IP</label><input value="solace.demo.local"></div><div class="field"><label>PORT</label><input value="55555"></div><div class="field"><label>MESSAGE VPN</label><input value="aviation-vpn"></div><div class="field"><label>USERNAME</label><input value="eventinsight-user"></div><div class="field"><label>PASSWORD</label><input type="password" value="••••••••"></div><div class="field"><label>INTERFACE</label><select><option>Solace Native API</option><option>JMS</option><option>AMQP</option><option>MQTT</option><option>REST Messaging</option></select></div><div class="field"><label>DESTINATION TYPE</label><select><option>Queue</option><option>Topic</option></select></div><div class="field"><label>QUEUE / TOPIC</label><input value="flight.events"></div><div class="field"><label>MODE</label><select><option>Consume</option><option>Browse</option></select></div><div class="field"><label>TLS</label><select><option>Enabled</option><option>Disabled</option></select></div><div class="field full"><label>SASL / CERTIFICATE SETTINGS</label><textarea rows="3" placeholder="Optional SASL, TLS or client certificate configuration..."></textarea></div></div><div style="display:flex;justify-content:flex-end;gap:7px;margin-top:12px"><button class="btn" onclick="closeModal('brokerModal')">Cancel</button><button class="btn primary" onclick="saveBroker()">Test & Save Connection</button></div></div></div>
+
+<!-- DB MODAL -->
+<div id="dbModal" class="overlay"><div class="modal"><div class="modal-head"><h2>Connect Existing Database</h2><button class="close" onclick="closeModal('dbModal')">×</button></div><p class="mini">Existing enterprise data can use the same search, visualization, AI and reporting experience.</p><div class="form-grid"><div class="field"><label>CONNECTION NAME</label><input value="Historical Aviation Data"></div><div class="field"><label>DATABASE TYPE</label><select><option>PostgreSQL</option><option>MongoDB</option><option>SQL Server</option><option>Oracle</option></select></div><div class="field"><label>HOST</label><input value="db.internal.local"></div><div class="field"><label>PORT</label><input value="5432"></div><div class="field"><label>DATABASE</label><input value="aviation_history"></div><div class="field"><label>USERNAME</label><input value="eventinsight_reader"></div><div class="field"><label>PASSWORD</label><input type="password" value="••••••••"></div><div class="field"><label>SCHEMA / COLLECTION</label><input value="events"></div></div><div style="display:flex;justify-content:flex-end;gap:7px;margin-top:12px"><button class="btn" onclick="closeModal('dbModal')">Cancel</button><button class="btn primary" onclick="saveDatabase()">Test & Save</button></div></div></div>
+
+<!-- MESSAGE DRAWER -->
+<div id="detailDrawer" class="drawer"><div class="modal-head"><h2 id="detailTitle">Message details</h2><button class="close" onclick="closeDetail()">×</button></div><div id="detailBody"></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const messages=[
+ {time:'09:14:02',entity:'Flight',summary:'AI203 delayed by 25 minutes',source:'Flight Operations',format:'JSON',status:'Normal',payload:{flight:'AI203',from:'BOM',to:'DEL',status:'Delayed',delayMinutes:25}},
+ {time:'09:12:46',entity:'Weather',summary:'Heavy rain advisory near BOM',source:'Weather Advisory',format:'XML',status:'Warning',payload:{airport:'BOM',condition:'Heavy rain',severity:'High'}},
+ {time:'09:11:21',entity:'Airport',summary:'Runway 27 maintenance window',source:'Airport Ops',format:'JSON',status:'Normal',payload:{airport:'BOM',runway:'27',activity:'Maintenance'}},
+ {time:'09:09:18',entity:'Flight',summary:'6 departures delayed',source:'Flight Operations',format:'JSON',status:'Normal',payload:{airport:'BOM',delayedDepartures:6}},
+ {time:'09:07:33',entity:'NOTAM',summary:'Temporary airspace restriction',source:'Airport Ops',format:'Plain Text',status:'Warning',payload:{region:'North India',restriction:'Temporary'}},
+ {time:'09:04:51',entity:'Aircraft',summary:'Aircraft AI-IXT entered service area',source:'Flight Operations',format:'JSON',status:'Normal',payload:{aircraft:'AI-IXT',event:'Entered service area'}},
+ {time:'09:02:10',entity:'Market',summary:'Aviation sector volume increased',source:'Market Feed',format:'CSV',status:'Normal',payload:{sector:'Aviation',volume:'+12.4%'}}
+];
+const entities=['Flight','Weather','NOTAM','Airport','Aircraft','Passenger','Cargo','Market'];let selectedEntities=new Set(['Flight','Weather','Airport']);
+const labels={overview:'Overview',ai:'AI Assistant',messages:'Messages',analytics:'Analytics',sources:'Data Sources',monitor:'Ingestion Monitor',saved:'Saved Searches',reports:'Reports',organization:'Organization',audit:'Audit Log',status:'System Status'};
+function show(id){document.getElementById(id).classList.remove('hidden')}
+function hide(id){document.getElementById(id).classList.add('hidden')}
+function showWorkspace(){hide('loginScreen');show('workspaceScreen')}
+function enterApp(){hide('workspaceScreen');const app=document.getElementById('app');app.style.display='block';route('overview');init()}
+function route(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const target=document.getElementById('page-'+page);if(target)target.classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.getElementById('crumbPage').textContent=labels[page]||page;window.scrollTo({top:0,behavior:'smooth'})}
+function switchOrg(v){document.getElementById('crumbOrg').textContent=v;toast('Workspace switched to '+v)}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.style.display='none',2400)}
+function openModal(id){document.getElementById(id).style.display='flex'}function closeModal(id){document.getElementById(id).style.display='none'}
+function saveBroker(){closeModal('brokerModal');toast('Connection saved • ingestion consumer provisioning started');route('monitor')}
+function saveDatabase(){closeModal('dbModal');toast('Database connection tested and saved');route('sources')}
+function generateReport(){toast('AI report generation started')}
+function toggle(el){el.classList.toggle('on')}
+function orgTab(tab,btn){['profile','users','roles','security'].forEach(x=>document.getElementById('org'+x.charAt(0).toUpperCase()+x.slice(1)).classList.add('hidden'));document.getElementById('org'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
+function renderChart(id){const el=document.getElementById(id);if(!el)return;el.innerHTML='';const vals=Array.from({length:12},()=>35+Math.floor(Math.random()*65));vals.forEach((v,i)=>{const b=document.createElement('div');b.className='bar';b.style.height=v+'%';b.innerHTML='<span>'+((i+1)%12||12)+'h</span>';el.appendChild(b)})}
+function renderFeed(){const el=document.getElementById('liveFeed');el.innerHTML=messages.slice(0,5).map(m=>`<div style="display:grid;grid-template-columns:70px 85px 1fr 80px;gap:8px;padding:9px 0;border-bottom:1px solid #202a38;font-size:10px"><span class="muted">${m.time}</span><b>${m.entity}</b><span>${m.summary}</span><span class="badge ${m.status==='Warning'?'amber':'green'}">${m.status}</span></div>`).join('')}
+function renderMessages(){const q=(document.getElementById('msgSearch')?.value||'').toLowerCase();const type=document.getElementById('typeFilter')?.value||'All entities';const source=document.getElementById('sourceFilter')?.value||'All sources';const rows=messages.filter(m=>(type==='All entities'||m.entity===type)&&(source==='All sources'||m.source===source)&&(!q||JSON.stringify(m).toLowerCase().includes(q)));document.getElementById('messageTable').innerHTML=rows.map((m,i)=>`<tr class="clickable" onclick="openDetail(${messages.indexOf(m)})"><td>${m.time}</td><td><span class="badge blue">${m.entity}</span></td><td>${m.summary}</td><td>${m.source}</td><td>${m.format}</td><td><span class="badge ${m.status==='Warning'?'amber':'green'}">${m.status}</span></td></tr>`).join('')||'<tr><td colspan="6" class="muted">No messages match the current filters.</td></tr>'}
+function resetFilters(){document.getElementById('msgSearch').value='';document.getElementById('typeFilter').value='All entities';document.getElementById('sourceFilter').value='All sources';renderMessages();toast('Filters reset')}
+function openDetail(index){const m=messages[index];document.getElementById('detailTitle').textContent=m.entity+' message · '+m.time;document.getElementById('detailBody').innerHTML=`<div class="kv"><b>Entity</b><span>${m.entity}</span></div><div class="kv"><b>Source</b><span>${m.source}</span></div><div class="kv"><b>Format</b><span>${m.format}</span></div><div class="kv"><b>Status</b><span>${m.status}</span></div><div class="kv"><b>Receive time</b><span>${m.time}</span></div><h3 style="font-size:12px;margin:18px 0 7px">Original payload</h3><div class="code">${escapeHtml(JSON.stringify(m.payload,null,2))}</div><div style="display:flex;gap:7px;margin-top:12px"><button class="btn" onclick="toast('Message exported as JSON')">↓ Export</button><button class="btn primary" onclick="usePrompt('Analyze this '+m.entity+' message for operational concerns.')">✦ Analyze with AI</button></div>`;document.getElementById('detailDrawer').classList.add('open')}
+function closeDetail(){document.getElementById('detailDrawer').classList.remove('open')}
+function escapeHtml(s){return s.replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function renderEntities(){document.getElementById('entityList').innerHTML=entities.map(e=>`<button class="${selectedEntities.has(e)?'active':''}" onclick="toggleEntity('${e}',this)">${selectedEntities.has(e)?'✓ ':'○ '}${e}</button>`).join('')}
+function toggleEntity(e,btn){selectedEntities.has(e)?selectedEntities.delete(e):selectedEntities.add(e);renderEntities();toast(e+(selectedEntities.has(e)?' added to':' removed from')+' AI context')}
+function usePrompt(text){route('ai');document.getElementById('aiInput').value=text;sendAI()}
+function sendAI(){const input=document.getElementById('aiInput');const q=input.value.trim();if(!q)return;const body=document.getElementById('chatBody');body.innerHTML+=`<div class="bubble user">${escapeHtml(q)}</div>`;input.value='';setTimeout(()=>{const answer=mockAnswer(q);body.innerHTML+=`<div class="bubble ai">${answer}</div>`;body.scrollTop=body.scrollHeight},450)}
+function mockAnswer(q){const l=q.toLowerCase();if(l.includes('how many')&&l.includes('flight'))return '<b>AI result</b><br>38,420 Flight messages were received during the last 12 hours.';if(l.includes('weather')&&l.includes('compare'))return '<b>Comparison</b><br>Weather messages increased by 14% today compared with yesterday. High-severity advisories were concentrated around Mumbai and Northern India.';if(l.includes('delayed'))return '<b>Flight delay analysis</b><br>127 Flight messages contain delayed departures. The largest concentration is at BOM.';if(l.includes('unusual'))return '<b>Traffic pattern</b><br>Message volume is 18% above the previous 12-hour period, with an unusual increase in NOTAM activity.';if(l.includes('producer'))return '<b>Top producers</b><br>Flight Operations, Weather Advisory and Airport Ops generated the highest message volume in the current dataset.';return '<b>AI analysis</b><br>I analyzed the stored event data for the selected entities: '+Array.from(selectedEntities).join(', ')+'. The result shows normal operational activity with a few notable increases in flight and weather events.'}
+function exportMessages(){const data=JSON.stringify(messages,null,2);const blob=new Blob([data],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='eventinsight-messages.json';a.click();URL.revokeObjectURL(a.href);toast('JSON export downloaded')}
+function saveCurrentSearch(){toast('Search saved to your workspace')}
+function globalSearch(v){if(v.trim()){route('messages');document.getElementById('msgSearch').value=v;renderMessages()}}
+function renderAnalytics(){const entity=[['Flight',62],['Weather',18],['Airport',9],['NOTAM',6],['Aircraft',5]];document.getElementById('entityBars').innerHTML=entity.map(x=>`<div style="margin:11px 0"><div style="display:flex;justify-content:space-between;font-size:10px"><span>${x[0]}</span><b>${x[1]}%</b></div><div class="progress"><span style="width:${x[1]}%"></span></div></div>`).join('');const formats=[['JSON',58],['XML',17],['CSV',12],['Plain Text',8],['Binary/Other',5]];document.getElementById('formatBars').innerHTML=formats.map(x=>`<div style="margin:11px 0"><div style="display:flex;justify-content:space-between;font-size:10px"><span>${x[0]}</span><b>${x[1]}%</b></div><div class="progress"><span style="width:${x[1]}%"></span></div></div>`).join('');document.getElementById('producerList').innerHTML=['Flight Operations','Weather Advisory','Airport Ops','Market Feed'].map((x,i)=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #202a38;font-size:10px"><span>${i+1}. ${x}</span><b>${[14280,4820,2640,1940][i].toLocaleString()}</b></div>`).join('')}
+function init(){renderChart('overviewChart');renderChart('analyticsChart');renderFeed();renderMessages();renderEntities();renderAnalytics();setInterval(()=>{const n=284612+Math.floor(Math.random()*800);document.getElementById('kpiMessages').textContent=n.toLocaleString();document.getElementById('rate').textContent=(2300+Math.floor(Math.random()*350)).toLocaleString();renderChart('overviewChart');renderFeed()},5000)}
+</script>
+</body>
+</html>

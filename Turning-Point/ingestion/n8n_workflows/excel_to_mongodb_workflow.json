@@ -1,0 +1,112 @@
+{
+  "name": "EventInsight AI - Excel to MongoDB Ingestion Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "filePath": "/data/dataset/xlsx_data/Workbook1.xlsx"
+      },
+      "id": "2",
+      "name": "Read Excel Workbook",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3",
+      "name": "Spreadsheet Extract Rows",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalization and Entity Classification in n8n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const row = item.json;\n  const isFlight = row.aircraftIdentification || row.gufi || row.fdpsFlightStatus;\n  const isNotam = row['ns3:text'] || row['ns2:identifier'] || row['ns6:airportname'];\n  \n  const entityType = isFlight ? 'Flight' : (isNotam ? 'NOTAM' : 'GeneralEvent');\n  const eventId = isFlight && row.gufi ? `evt_flight_${row.gufi}` : (isNotam && row['ns2:identifier'] ? `evt_notam_${row['ns2:identifier']}` : `evt_n8n_${Date.now()}_${Math.random().toString(36).substring(7)}`);\n  \n  results.push({\n    json: {\n      eventId,\n      organizationId: 'org_turning_point_default',\n      sourceId: 'solace_n8n_pipeline',\n      receivedAt: new Date().toISOString(),\n      format: 'EXCEL_ROW',\n      entityType,\n      summary: isFlight ? `Flight ${row.aircraftIdentification || 'Unknown'} ${row.departurePoint || ''}->${row.arrivalPoint || ''}` : `NOTAM ${row['ns3:series'] || ''}${row['ns3:number'] || ''}`,\n      status: 'PROCESSED',\n      normalized: isFlight ? {\n        flightNumber: row.aircraftIdentification,\n        gufi: row.gufi,\n        departureAirport: row.departurePoint,\n        arrivalAirport: row.arrivalPoint,\n        flightStatus: row.fdpsFlightStatus\n      } : {\n        notamCode: `${row['ns3:series'] || ''}${row['ns3:number'] || ''}`,\n        location: row['ns6:icaoLocation'] || row['ns3:location'],\n        text: row['ns3:text']\n      },\n      rawPayload: row\n    }\n  });\n}\n\nreturn results;"
+      },
+      "id": "4",
+      "name": "Normalize & Classify Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "events",
+        "updateKey": "eventId",
+        "fields": "organizationId,sourceId,receivedAt,format,entityType,summary,status,normalized,rawPayload",
+        "upsert": true
+      },
+      "id": "5",
+      "name": "MongoDB Upsert",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Excel Workbook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Excel Workbook": {
+      "main": [
+        [
+          {
+            "node": "Spreadsheet Extract Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spreadsheet Extract Rows": {
+      "main": [
+        [
+          {
+            "node": "Normalize & Classify Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize & Classify Code": {
+      "main": [
+        [
+          {
+            "node": "MongoDB Upsert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

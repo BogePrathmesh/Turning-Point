@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns5:MessageCollection
+  xmlns:ns5="http://www.faa.aero/nas/3.0"
+  xmlns:ns2="http://www.fixm.aero/base/3.0"
+  xmlns:ns3="http://www.fixm.aero/flight/3.0"
+  xmlns:ns4="http://www.fixm.aero/foundation/3.0">
+  <message
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns5:FlightMessageType">
+    <flight xsi:type="ns5:NasFlightType" centre="ZAB" source="DH" system="ATL" timestamp="2026-10-21T19:55:11.780Z">
+      <aircraftDescription xsi:type="ns5:NasAircraftType" equipmentQualifier="G">
+        <aircraftType>
+          <icaoModelIdentifier>BE20</icaoModelIdentifier>
+        </aircraftType>
+      </aircraftDescription>
+      <arrival xsi:type="ns5:NasArrivalType" arrivalPoint="KSLC">
+        <runwayPositionAndTime>
+          <runwayTime>
+            <estimated time="2026-10-21T21:19:00Z"/>
+          </runwayTime>
+        </runwayPositionAndTime>
+      </arrival>
+      <departure xsi:type="ns5:NasDepartureType" departurePoint="KIWA">
+        <runwayPositionAndTime>
+          <runwayTime>
+            <actual time="2026-10-21T19:55:00Z"/>
+          </runwayTime>
+        </runwayPositionAndTime>
+      </departure>
+      <flightIdentification xsi:type="ns5:NasFlightIdentificationType" computerId="451" siteSpecificPlanId="525" aircraftIdentification="N773TP"/>
+      <flightStatus xsi:type="ns5:NasFlightStatusType" fdpsFlightStatus="ACTIVE"/>
+      <gufi codeSpace="urn:uuid">b807504b-26ef-40da-949b-32e60b092d1c</gufi>
+      <supplementalData xsi:type="ns5:NasSupplementalDataType">
+        <additionalFlightInformation>
+          <nameValue name="MSG_SEQ_NO" value="4426679"/>
+          <nameValue name="FDPS_GUFI" value="us.fdps.2026-10-21T17:53:01Z.000/00/4Cr"/>
+          <nameValue name="FLIGHT_PLAN_SEQ_NO" value="4"/>
+          <nameValue name="SOURCE_TIME_AND_SEQ" value="1955117367"/>
+          <nameValue name="SOURCE_TIME" value="19_55_11"/>
+        </additionalFlightInformation>
+      </supplementalData>
+      <coordination coordinationTime="2026-10-21T19:55:00Z" coordinationTimeHandling="D"/>
+      <flightPlan identifier="KA643814Cr"/>
+    </flight>
+  </message>
+</ns5:MessageCollection>
