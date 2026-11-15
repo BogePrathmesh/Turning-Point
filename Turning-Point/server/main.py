@@ -21,6 +21,7 @@ from pydantic import BaseModel
 load_dotenv()
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from ingestion.solace_config import build_messaging_service, load_solace_settings
+from server.ai_rule_engine import process_ai_query
 
 app = FastAPI(
     title="EventInsight AI API",
@@ -352,3 +353,36 @@ def test_solace_connection(org_id: str = "org_turning_point_default"):
                 service.disconnect()
             except Exception:
                 pass
+
+
+class AIQueryRequest(BaseModel):
+    query: str
+    contextEntities: Optional[List[str]] = None
+    orgId: Optional[str] = "org_turning_point_default"
+
+
+@app.post("/api/ai/query")
+def handle_ai_query(req: AIQueryRequest):
+    """
+    Process natural language operational questions using the deterministic,
+    rule-based intelligence engine grounded in MongoDB event collections.
+    """
+    if not req.query or not req.query.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Query text cannot be empty."
+        )
+
+    try:
+        result = process_ai_query(
+            query=req.query,
+            db=db,
+            context_entities=req.contextEntities,
+            org_id=req.orgId or "org_turning_point_default"
+        )
+        return result
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"AI query processing error: {exc}"
+        )
